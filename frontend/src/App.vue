@@ -1,35 +1,39 @@
 <template>
   <v-app dark>
-    <!-- <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar> -->
-    <UserLogin />
+    <!-- <v-navigation-drawer app></v-navigation-drawer>
+    <v-toolbar app></v-toolbar>-->
+
+    <v-content>
+      <v-container fluid fill-height>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+
+    <v-footer app>
+      <v-layout align-center justify-center>
+        ©2019 —
+        <strong>Team 40</strong>
+      </v-layout>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import UserLogin from './components/UserLogin'
-
 export default {
-  name: 'App',
-  components: {
-    UserLogin
-  },
-  data () {
+  data() {
     return {
       //
-    }
+    };
+  },
+  created: function() {
+    this.$http.interceptors.response.use(undefined, function(err) {
+      return new Promise(function(resolve, reject) {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch(logout);
+        }
+        throw err;
+      });
+    });
   }
-}
+};
 </script>
