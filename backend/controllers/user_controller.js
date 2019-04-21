@@ -65,14 +65,15 @@ exports.user_register = (req, res, next) => {
 };
 
 exports.user_login = (req, res, next) => {
-  console.log("user_login: " + req.body.Username)
+  console.log("user_login: " + req.body.Email)
 
-  const queryStr = "select Username, Password from USER where Username=?"
-  sql.query(queryStr, [req.body.Username], function (err, rows, fields) {
+  const queryStr = "select User.Username, User.Password from 	User, User_email where User.username = User_email.username and Email=?"
+  sql.query(queryStr, [req.body.Email], function (err, rows, fields) {
     if (err) {
       console.log("ERROR - user_getUser: ", err);
       return res.sendStatus(500)
     }
+    console.log(rows)
 
     if (rows.length < 1) {
       console.log("User does not exists")
@@ -92,7 +93,7 @@ exports.user_login = (req, res, next) => {
       if (result) {
         const token = jwt.sign(
           {
-            Username: rows[0].Username,
+            Email: rows[0].Email,
             Password: rows[0].Password
           },
           process.env.JWT_KEY,
