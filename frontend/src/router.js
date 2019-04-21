@@ -32,6 +32,18 @@ const router = new Router({
         requiresAuth: true
       }
     },
+      //
+      {
+        path: "/ManagerFunctionality",
+        name: "ManagerFunctionality",
+        component: () => import("./views/ManagerFunctionality.vue")
+      },
+      {
+        path: "/RegUser",
+        name: "RegUser",
+        component: () => import("./views/RegUser.vue")
+      },
+
     {
       path: "/about",
       name: "about",
