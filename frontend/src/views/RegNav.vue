@@ -10,7 +10,7 @@
             <v-layout row>
               <v-flex></v-flex>
 
-              <v-flex md6>
+              <v-flex md5>
                 <v-layout align-space-around justify-center column>
                   <v-btn color="primary">User Only</v-btn>
                   <v-btn color="primary">Visitor Only</v-btn>

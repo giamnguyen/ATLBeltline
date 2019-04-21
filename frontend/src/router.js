@@ -32,6 +32,23 @@ const router = new Router({
         requiresAuth: true
       }
     },
+      {
+        path: "/RegUser",
+        name: "RegUser",
+        component: () => import("./views/RegUser.vue")
+      },
+
+      {
+        path: "/RegEmployee",
+        name: "RegEmployee",
+        component: () => import("./views/RegEmployee.vue")
+      },
+      {
+        path: "/RegEmployeeVisitor",
+        name: "RegEmployeeVisitor",
+        component: () => import("./views/RegEmployeeVisitor.vue")
+      },
+
     {
       path: "/AdminOnlyFunc",
       name: "AdminOnlyFunc",

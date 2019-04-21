@@ -78,22 +78,22 @@ export default {
       let Username = "test1";
       let Password = "test1";
       
-      this.$store
-        .dispatch("login", { Username, Password })
-        .then(() => this.$http.post("http://localhost:3000/users/login"))
-        .catch(err => console.log(err));
+      // this.$store
+      //   .dispatch("login", { Username, Password })
+      //   .then(() => this.$http.post("http://localhost:3000/users/login"))
+      //   .catch(err => console.log(err));
 
-      // axios
-      //   .post("http://localhost:3000/users/login", {
-      //     Username: "test1",
-      //     Password: "test1"
-      //   })
-      //   .then(function(response) {
-      //     console.log(response);
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+      axios
+        .post("http://localhost:3000/users/login", {
+          Username: "test1",
+          Password: "test1"
+        })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

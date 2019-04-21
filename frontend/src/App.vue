@@ -11,8 +11,7 @@
 
     <v-footer app>
       <v-layout align-center justify-center>
-        ©2019 —
-        <strong>Team 40</strong>
+        ©2019 — <strong>Team 40</strong>
       </v-layout>
     </v-footer>
   </v-app>
