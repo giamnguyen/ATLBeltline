@@ -45,6 +45,41 @@ const router = new Router({
       },
 
     {
+      path: "/AdminOnlyFunc",
+      name: "AdminOnlyFunc",
+      component: () => import("./views/AdminOnlyFunc.vue")
+    },
+    {
+      path: "/AdminVisitorFunc",
+      name: "AdminVisitorFunc",
+      component: () => import("./views/AdminVisitorFunc.vue")
+    },
+    {
+      path: "/ManagerVisitorFunc",
+      name: "ManagerVisitorFunc",
+      component: () => import("./views/ManagerVisitorFunc.vue")
+    },
+    {
+      path: "/ManagerOnlyFunc",
+      name: "ManagerOnlyFunc",
+      component: () => import("./views/ManagerOnlyFunc.vue")
+    },
+    {
+      path: "/StaffVisitorFunc",
+      name: "StaffVisitorFunc",
+      component: () => import("./views/StaffVisitorFunc.vue")
+    },
+    {
+      path: "/StaffOnlyFunc",
+      name: "StaffOnlyFunc",
+      component: () => import("./views/StaffOnlyFunc.vue")
+    },
+    {
+      path: "/VisitorFunc",
+      name: "VisitorFunc",
+      component: () => import("./views/VisitorFunc.vue")
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting

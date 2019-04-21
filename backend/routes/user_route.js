@@ -4,7 +4,7 @@ const router = express.Router();
 const UserController = require('../controllers/user_controller');
 const checkAuth = require('../middleware/check-auth');
 
-router.get("/", checkAuth, UserController.user_getAll);
+router.get("/", UserController.user_getAll);
 
 router.post("/register", UserController.user_register);
 router.post("/login", UserController.user_login);
