@@ -68,6 +68,11 @@ const router = new Router({
       component: () => import("./views/VisitorFunc.vue")
     },
     {
+      path: "/UserTakeTransit",
+      name: "UserTakeTransit",
+      component: () => import("./views/UserTakeTransit.vue")
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting
