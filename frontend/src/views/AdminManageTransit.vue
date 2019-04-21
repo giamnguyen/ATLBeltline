@@ -4,7 +4,7 @@
       <v-flex xs12 sm8 md7>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Take Transit</v-toolbar-title>
+            <v-toolbar-title>Manage Transit</v-toolbar-title>
           </v-toolbar>
 
         <v-layout row justify-space-between>
