@@ -13,12 +13,12 @@
                     </v-flex>
                     </v-layout>
 
-                <v-text-field
-                    id="Route"
-                    name="Route"
-                    label="Route"
-                    type="Route"
-                    ></v-text-field>
+                <v-layout fill-height>
+                    <v-card-text>
+                        <p>Route</p>
+                        <input v-model="message" placeholder="Blue">
+                    </v-card-text>
+                    </v-layout>
 
                 <v-layout column align-space-around justify-Start>
                     <v-flex xs5>
