@@ -93,7 +93,7 @@ exports.user_login = (req, res, next) => {
       if (result) {
         const token = jwt.sign(
           {
-            Email: rows[0].Email,
+            Username: rows[0].Username,
             Password: rows[0].Password
           },
           process.env.JWT_KEY,

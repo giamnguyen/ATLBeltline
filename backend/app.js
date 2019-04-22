@@ -6,6 +6,10 @@ const logger = require("morgan");
 
 // const mysql_connection = require("./db/sql_connection");
 const userRoutes = require('./routes/user_route');
+const visitorRoutes = require('./routes/visitor_route');
+const staffRoutes = require('./routes/staff_route');
+const managerRoutes = require('./routes/manager_route');
+const adminRoutes = require('./routes/admin_route');
 
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: false }));
@@ -37,6 +41,10 @@ app.use((req, res, next) => {
 
 // Routes which should handle requests
 app.use("/users", userRoutes);
+app.use("/visitors", visitorRoutes);
+app.use("/staffs", staffRoutes);
+app.use("/managers", managerRoutes);
+app.use("/admin", adminRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
