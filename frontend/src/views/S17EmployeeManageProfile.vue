@@ -1,6 +1,6 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex xs12 sm8 md4>
+    <v-flex xs12 sm12 md8>
       <v-card class="elevation-12">
         <v-toolbar dark color="primary">
           <v-toolbar-title>Employee Manage Profile</v-toolbar-title>
@@ -8,92 +8,116 @@
 
         <v-card-text>
           <v-form>
-            <v-text-field
-              id="Firstname"
-              name="Firstname"
-              label="First Name"
-              type="Firstname"
-              v-model="Firstname"
-              required
-              @input="$v.Firstname.$touch()"
-              @blur="$v.Firstname.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="Lastname"
-              name="Lastname"
-              label="Last Name"
-              type="Lastname"
-              v-model="passwordStr"
-              required
-              @input="$v.Lastname.$touch()"
-              @blur="$v.Lastname.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="Username"
-              name="Username"
-              label="Username"
-              type="Username"
-              v-model="Username"
-              required
-              @input="$v.Username.$touch()"
-              @blur="$v.Username.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="sitename"
-              name="sitename"
-              label="Site name"
-              type="sitename"
-              v-model="sitename"
-              required
-              @input="$v.sitename.$touch()"
-              @blur="$v.sitename.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="EmployeeID"
-              name="EmployeeID"
-              label="Employee ID"
-              type="EmployeeID"
-              v-model="EmployeeID"
-              @input="$v.EmployeeID.$touch()"
-              @blur="$v.EmployeeID.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="Phone"
-              name="Phone"
-              label="Phone"
-              type="Phone"
-              v-model="Phone"
-              required
-              @input="$v.Phone.$touch()"
-              @blur="$v.Phone.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="FullAddress"
-              name="FullAddress"
-              label="Full Address"
-              type="FullAddress"
-              v-model="FullAddress"
-              required
-              @input="$v.FullAddress.$touch()"
-              @blur="$v.FullAddress.$touch()"
-            ></v-text-field>
+            <v-layout row justify-space-between>
+            <v-flex xs5>
+              
+                <v-layout justify-start row>
+                <v-flex xs5>
+                    <p class="text-md-center">First Name: </p>
+                </v-flex>
+                <v-flex xs1>
+                    <input v-model="message" placeholder="">
+                </v-flex>
+                </v-layout>
+            </v-flex>
 
-            <template>
+            <v-flex xs6>
+                <v-layout justify-start row>
+                <v-flex xs5>
+                    <p class="text-md-center">Last Name: </p>
+                </v-flex>
+                <v-flex xs1>
+                    <input v-model="message" placeholder="">
+                </v-flex>
+                </v-layout>
+            </v-flex>
+        </v-layout>
+
+        <v-layout row justify-space-between>
+            <v-flex xs4>
+
+                <v-layout justify-start row>
+                <v-flex xs6>
+                    <p class="text-md-center">Username: </p>
+                </v-flex>
+                <v-flex xs1>
+                    <p>cwilson</p>
+                </v-flex>
+                </v-layout>
+            </v-flex>
+
+            <v-flex xs6>
+              
+                <v-layout justify-start row>
+                <v-flex xs5>
+                    <p class="text-md-center">Site Name: </p>
+                </v-flex>
+                <v-flex xs1>
+                    <input v-model="message" placeholder="">
+                </v-flex>
+                </v-layout>
+            </v-flex>
+        </v-layout>
+
+        <v-layout row justify-space-between>
+            <v-flex xs4>
+
+                <v-layout justify-start row>
+                <v-flex xs7>
+                    <p class="text-md-center">Employee ID: </p>
+                </v-flex>
+                <v-flex xs1>
+                    <p>123456789</p>
+                </v-flex>
+                </v-layout>
+            </v-flex>
+
+            <v-flex xs6>
+              
+                <v-layout justify-start row>
+                <v-flex xs4>
+                    <p class="text-md-center">Phone: </p>
+                </v-flex>
+                <v-flex xs1>
+                    <input v-model="message" placeholder="">
+                </v-flex>
+                </v-layout>
+            </v-flex>
+        </v-layout>
+
+        <v-layout row justify-space-between>
+            <v-flex xs4>
+
+                <v-layout justify-start row>
+                <v-flex xs7>
+                    <p class="text-md-center">Address: </p>
+                </v-flex>
+                <v-flex xs8>
+                    <p> 100 East Main Street, Seattle, WA 12345 </p>
+                </v-flex>
+                </v-layout>
+            </v-flex>
+        </v-layout>
+
+        <template>
             <v-container fluid>
             <v-checkbox v-model="checkbox1" :label="`Visitor Account`"></v-checkbox>
             </v-container>
             </template>
 
-            <v-text-field
-              name="email"
-              label="Email"
-              type="text"
-              v-model="emailStr"
-              :error-messages="emailErrors"
-              required
-              @input="$v.emailStr.$touch()"
-              @blur="$v.emailStr.$touch()"
-            ></v-text-field>
+            <v-layout row justify-space-between>
+            <v-flex xs4>
+
+                <v-layout justify-start row>
+                <v-flex xs7>
+                    <p class="text-md-center">Email: </p>
+                </v-flex>
+                <v-flex xs8>
+                    <input v-model="message" placeholder="">
+                </v-flex>
+                </v-layout>
+            </v-flex>
+        </v-layout>
 
 
             <v-layout align-center justify-center>

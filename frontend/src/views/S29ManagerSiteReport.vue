@@ -4,33 +4,8 @@
       <v-flex xs12 sm8 md9>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Manager Manage Event</v-toolbar-title>
+            <v-toolbar-title>Manager Site Report</v-toolbar-title>
           </v-toolbar>
-
-          <v-layout row justify-space-between>
-            <v-flex xs3>
-              
-                <v-layout justify-start row>
-                <v-flex xs5>
-                    <p class="text-md-center">Name: </p>
-                </v-flex>
-                <v-flex xs1>
-                    <input v-model="message" placeholder="">
-                </v-flex>
-                </v-layout>
-            </v-flex>
-
-            <v-flex xs7>
-                <v-layout justify-start row>
-                <v-flex xs5>
-                    <p class="text-md-center">Description Keyword: </p>
-                </v-flex>
-                <v-flex xs1>
-                    <input v-model="message" placeholder="">
-                </v-flex>
-                </v-layout>
-            </v-flex>
-        </v-layout>
 
         <v-layout row justify-space-between>
             <v-flex xs4>
@@ -62,7 +37,14 @@
         <v-layout column align-space-around justify-Start>
             <v-flex xs5>
                 <v-card-text>
-                <p>Duration Range:</p>
+                <p>Event Count Range:</p>
+                    <input v-model="message" placeholder="From">
+                    <input v-model="message" placeholder="To">
+                </v-card-text>
+            </v-flex>
+            <v-flex xs5>
+              <v-card-text>
+                <p>Staff Count Range:</p>
                     <input v-model="message" placeholder="From">
                     <input v-model="message" placeholder="To">
                 </v-card-text>
@@ -83,18 +65,16 @@
             </v-flex>
             <v-flex xs5>
                 <v-btn color="primary">Filter</v-btn>
-                <v-btn color="primary">Create</v-btn>
-                <v-btn color="primary">Edit</v-btn>
-                <v-btn color="primary">Delete</v-btn>
+                <v-btn color="primary">Daily detail</v-btn>
             </v-flex>
         </v-layout>
 
         <v-layout row justify-space-between>
             <v-data-table :headers="headers" :items="desserts" class="elevation-1">
                 <template v-slot:items="props">
-                <td>{{ props.item.Name }}</td>
-                <td class="text-xs-right">{{ props.item.StaffCounts }}</td>
-                <td class="text-xs-right">{{ props.item.DurationDays }}</td>
+                <td>{{ props.item.Date }}</td>
+                <td class="text-xs-right">{{ props.item.EventCount }}</td>
+                <td class="text-xs-right">{{ props.item.StaffCount }}</td>
                 <td class="text-xs-right">{{ props.item.TotalVisits }}</td>
                 <td class="text-xs-right">{{ props.item.TotalRevenue }}</td>
                 </template>
@@ -111,34 +91,39 @@
     data () {
         
       return {
-        contain_site: ['Inman Park', 'Checking1', 'Checking2'],
-        transport_type: ['MARTA', 'Bus', 'Bike', 'All'],
         headers: [
           {
-           text: 'Name',
+           text: 'Date',
             align: 'left',
             sortable: false,
             value: 'Name'
           },
-          { text: 'StaffCounts', value: 'StaffCounts' },
-          { text: 'DurationDays', value: 'DurationDays' },
+          { text: 'EventCount', value: 'EventCount' },
+          { text: 'StaffCount', value: 'StaffCount' },
           { text: 'TotalVisits', value: 'TotalVisits' },
           { text: 'TotalRevenue', value: 'TotalRevenue' },
         ],
         desserts: [
           {
-            Name: 'Bus Tour',
-            StaffCounts: '4',
-            DurationDays: '1',
-            TotalVisits: '80',
-            TotalRevenue: '2000'
+            Date: '2019-02-01',
+            EventCount: '4',
+            StaffCount: '7',
+            TotalVisits: '200',
+            TotalRevenue: '3280'
           },
           {
-            Name: 'Private Bus Tour',
-            StaffCounts: '1',
-            DurationDays: '1',
-            TotalVisits: '32',
-            TotalRevenue: '1280'
+            Date: '2019-02-02',
+            EventCount: '2',
+            StaffCount: '2',
+            TotalVisits: '50',
+            TotalRevenue: '0'
+          },
+          {
+            Date: '2019-02-03',
+            EventCount: '1',
+            StaffCount: '3',
+            TotalVisits: '40',
+            TotalRevenue: '0'
           },
         ]
       }

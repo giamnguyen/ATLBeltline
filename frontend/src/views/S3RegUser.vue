@@ -12,7 +12,7 @@
               id="Firstname"
               name="Firstname"
               label="First Name"
-              type="Firstname"
+              type="Text"
               v-model="passwordStr"
               :error-messages="passwordErrors"
               required
