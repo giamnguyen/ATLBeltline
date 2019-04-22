@@ -1,0 +1,44 @@
+CREATE PROCEDURE `S6_Register_Employee_Visitor`(in inFirstName varchar(20), in inLastName varchar(20) ,in inUserName varchar(20),
+in inUserType varchar(20) ,in inPassWord char(60), in inPhone char(10), in inAddress varchar(45), in inCity varchar(20), 
+in inState char(5), in inZipCode char(5), in inEmailList MEDIUMTEXT)
+BEGIN
+DECLARE _next TEXT DEFAULT NULL;
+DECLARE _nextlen INT DEFAULT NULL;
+DECLARE _value TEXT DEFAULT NULL;
+
+insert into USER(Username, Password, Firstname, Lastname, Status)
+values (inUserName, MD5(inPassWord), inFirstName, inLastName, 'Pending');
+
+insert into EMPLOYEE(Username, Phone, Address, City, State, Zipcode)
+values(inUsername, inPhone, inAddress, inCity, inState, inZipCode);
+
+insert into VISITOR(Username)
+values(inUserName);
+
+IF (inUserType like 'Manager') THEN 
+insert into MANAGER(Username)
+values (inUsername); 
+ELSE IF (inUserType like 'Administrator') THEN 
+insert into ADMINISTRATOR(Username)
+values (inUsername); 
+ELSE IF (inUserType like 'Staff') THEN 
+insert into STAFF(Username)
+values (inUsername); 
+END IF;
+END IF;
+END IF;
+
+iterator:
+LOOP
+  IF LENGTH(TRIM(inEmailList)) = 0 OR inEmailList IS NULL THEN
+    LEAVE iterator;
+  END IF;
+  SET _next = SUBSTRING_INDEX(inEmailList,',',1);
+  SET _nextlen = LENGTH(_next);
+  SET _value = TRIM(_next);
+
+  INSERT INTO  USER_EMAIL(Username, Email) VALUES (inUserName, _value);
+  SET inEmailList = INSERT(inEmailList,1,_nextlen + 1,'');
+END LOOP;
+
+END

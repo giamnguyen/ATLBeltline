@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S37_Visitor_Site_Detail_Display`(in inSite varchar(20))
+BEGIN
+select Name, OpenEveryday, Address
+from Site
+where Name like inSite;
+END

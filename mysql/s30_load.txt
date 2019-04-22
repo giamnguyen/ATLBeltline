@@ -1,0 +1,11 @@
+CREATE PROCEDURE `S30_Manager_Daily_Detail`(in inDate date)
+BEGIN
+select T1.Name, GROUP_CONCAT((SELECT concat(FirstName,' ',LastName)
+from USER where T4.username like username) SEPARATOR ", " ) as 'Staff Name(s)',
+T1.Event_Visits, T1.Event_Revenue
+from Manager_Site_Report_1 T1 inner join Manager_Daily_Detail_1 T4 on 
+T1.date between T4.StartDate and T4.EndDate and T1.Name = T4.Name
+where T1.Date like inDate
+group by T1.Name;
+
+END

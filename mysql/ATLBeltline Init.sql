@@ -3,6 +3,8 @@
 -- Host: localhost    Database: ATLBeltline
 -- ------------------------------------------------------
 -- Server version	8.0.15
+CREATE DATABASE  IF NOT EXISTS `ATLBeltline` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+USE `ATLBeltline`;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;

@@ -1,0 +1,4 @@
+CREATE PROCEDURE `S26_Manager_View_Edit_Event_Update_Remove_Staff`(in inStaffUsername varchar(20))
+BEGIN
+delete from ASSIGN_TO where Username like inStaffUsername;
+END

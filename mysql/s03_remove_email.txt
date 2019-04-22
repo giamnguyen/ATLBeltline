@@ -1,0 +1,4 @@
+CREATE PROCEDURE `S3_Register_User_Only_Remove`(in inUsername varchar(20), in inEmail varchar(40))
+BEGIN
+delete from USER_EMAIL where Username like inUsername and Email like inEmail;
+END

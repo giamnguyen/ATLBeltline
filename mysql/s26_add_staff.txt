@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S26_Manager_View_Edit_Event_Update_Add_Staff`(in inUserName varchar(20), in staffUsername varchar(20), in inStartDate date,
+in inNameEvent varchar(20))
+BEGIN
+INSERT INTO ASSIGN_TO (Username, SiteName, Name, StartDate)
+VALUES(inStaffUserName, (select Name from Site where manager like inUserName), inEventName, inStartDate);
+END

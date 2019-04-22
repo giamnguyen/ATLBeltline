@@ -1,0 +1,52 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `S25_Manager_Manage_Event_Load`(in inUserName varchar(20))
+BEGIN
+Drop View if exists S25_Manager_Manage_Event_View_1;
+set @a = concat('
+CREATE VIEW S25_Manager_Manage_Event_View_1 AS
+    SELECT 
+        T1.startDAte,
+        T2.Name,
+        T1.Price,
+        T1.Description,
+        COUNT(*) AS Total_Visits,
+        (COUNT(*) * T1.Price) AS Total_Revenue,
+        (DATEDIFF(T1.EndDate, T1.StartDate) + 1) AS Duration
+    FROM
+        EVENT T1
+            INNER JOIN
+        VISIT_EVENT T2 ON T1.host = T2.SiteName
+            AND T1.Name = T2.Name
+            AND T1.StartDate = T2.StartDate
+	WHERE T1.Host in (Select Name from Site where manager like "', inUsername, '")
+    GROUP BY T2.Sitename , T2.Name , T1.Price , T1.StartDate;');
+prepare statement1 from @a;
+execute statement1 ;
+
+Drop View if exists S25_Manager_Manage_Event_View_2;
+set @a = concat('
+CREATE VIEW S25_Manager_Manage_Event_View_2 AS
+    SELECT 
+        T2.name, COUNT(DISTINCT (T2.username)) AS Staff_Count
+    FROM
+        Event T1
+            INNER JOIN
+        ASSIGN_TO T2 ON T1.host = T2.SiteName
+            AND T1.Name = T2.Name
+            AND T1.StartDate = T2.StartDate
+	WHERE T1.Host in (Select Name from Site where manager like "', inUsername, '")
+    GROUP BY T2.name;');
+prepare statement1 from @a;
+execute statement1 ;
+
+SELECT 
+    T1.Name,
+    T2.Staff_Count,
+    T1.Duration,
+    SUM(T1.Total_Visits) AS 'Total Visits',
+    SUM(T1.Total_Revenue) AS 'Total Revenue'
+FROM
+    S25_Manager_Manage_Event_View_1 T1
+        INNER JOIN
+    S25_Manager_Manage_Event_View_2 T2 ON T1.Name = T2.Name
+GROUP BY T1.Name , T2.Staff_Count , T1.Duration;
+END

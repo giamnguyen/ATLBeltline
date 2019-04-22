@@ -1,0 +1,8 @@
+CREATE PROCEDURE `S26_Manager_View_Edit_Event_Update_Description`(in inUserName varchar(20), in inDescription varchar(400), in inStartDate date,
+in inNameEvent varchar(20))
+BEGIN
+
+UPDATE EVENT Set Description = inDescription where Host like (select Name from Site where manager like inUserName)
+and startDate like inStartDate and Name like inNameEvent;
+
+END

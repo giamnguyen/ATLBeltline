@@ -1,0 +1,15 @@
+CREATE PROCEDURE `S38_Visior_Visit_History`(in inUsername varchar(20), in inSite varchar(20), in inStartDate date, in inEndDate date)
+BEGIN
+(select T2.Date, T2.Name, T2.SiteName, T1.Price
+from Event T1 inner join VISIT_EVENT T2 on T1.host = T2.SiteName and T1.Name = T2.Name and T1.StartDate = T2.StartDate
+where T2.username like inUsername
+and if (inSite like 'All', T2.SiteName not like inSite, T2.SiteName like inSite)
+and T2.Date between inStartDate and inEndDate
+)
+union all
+(Select Date, null, SiteName, 0
+from Visit_Site
+where UserName like inUsername
+and if (inSite like 'All', SiteName not like inSite, SiteName like inSite)
+and Date between inStartDate and inEndDate);
+END

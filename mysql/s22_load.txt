@@ -1,0 +1,16 @@
+CREATE PROCEDURE `S22_Administrator_Manage_Transit_Load`()
+BEGIN
+select col1.route, col1.transportType, col1.price, col1.transitLogged, col2.connected from
+(
+(select T1.route, T1.transportType, T1.price ,count(T2.route) as transitLogged
+from 	(TRANSIT T1 inner join TAKE T2 on T2.route = T1.route)
+group by 
+T1.route) as col1
+inner join 
+(select T3.route, count(T3.route) as connected
+from	(TRANSIT T3 inner join CONNECT T4 on T3.route = T4.route)
+where T4.SiteName like 'Inman Park'
+group by 
+T3.route) as col2
+on col1.route = col2.route ) ;
+END

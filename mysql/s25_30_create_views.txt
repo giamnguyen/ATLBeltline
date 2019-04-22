@@ -1,0 +1,73 @@
+CREATE PROCEDURE `S25_30_Manager_CreateViews`(in inManagerUser varchar(20))
+BEGIN
+set @a = 'Drop View if exists Manager_Site_Report_1';
+prepare statement1 from @a;
+execute statement1 ;
+set @a = concat('
+Create View Manager_Site_Report_1 as
+select T2.date, T2.name, count(*) as "Event_Visits", (count(*) * T1.Price) as "Event_Revenue"
+from EVENT T1 inner join VISIT_EVENT T2 on T1.host = T2.SiteName and T1.Name = T2.Name and T1.StartDate = T2.StartDate
+where Sitename like (select name from SITE where manager like "',inManagerUser, '")
+group by date, name;');
+prepare statement1 from @a;
+execute statement1 ;
+
+
+set @a = 'Drop View if exists Manager_Site_Report_2';
+prepare statement1 from @a;
+execute statement1;
+set @a = concat('
+Create View Manager_Site_Report_2 as
+Select T2.StartDate, T1.EndDate, T2.name, count(distinct(T2.username)) as Staff_Count
+from Event T1 inner join ASSIGN_TO T2 on T1.host = T2.SiteName and T1.Name = T2.Name and T1.StartDate = T2.StartDate
+where T1.Host like (select name from SITE where manager like "',inManagerUser, '")
+Group by T2.name, T2.StartDate, T1.EndDate;');
+prepare statement1 from @a;
+execute statement1 ;
+
+
+Drop View if exists Manager_Site_Report_3;
+CREATE VIEW Manager_Site_Report_3 AS
+    SELECT 
+        T1.Date,
+        T1.Name,
+        T1.Event_Visits,
+        T1.Event_Revenue,
+        T4.Staff_Count
+    FROM
+        Manager_Site_Report_1 T1
+            INNER JOIN
+        Manager_Site_Report_2 T4 ON T1.date BETWEEN T4.StartDate AND T4.EndDate
+            AND T1.Name = T4.Name;
+
+set @a = 'Drop View if exists Manager_Site_Report_4';
+prepare statement1 from @a;
+execute statement1 ;
+set @a = concat('Create View Manager_Site_Report_4 as
+select date, SiteName, count(*) as "Site_Visits"
+from Visit_Site
+where Sitename like (select name from SITE where manager like "',inManagerUser, '")
+group by date, SiteName;');
+prepare statement1 from @a;
+execute statement1 ;
+
+Drop View if exists Manager_Site_Report_5;
+Create View Manager_Site_Report_5 as
+(select date, Staff_Count, Event_Visits as "Total_Visits", Event_Revenue as "Event_Revenue" from Manager_Site_Report_3
+union all select date, 0, Site_Visits, 0 from Manager_Site_Report_4);
+
+
+
+set @a = 'Drop View if exists Manager_Daily_Detail_1';
+prepare statement1 from @a;
+execute statement1 ;
+
+set @a = concat('Create View Manager_Daily_Detail_1 as
+Select T2.StartDate, T1.EndDate, T2.name, T2.userName
+from Event T1 inner join ASSIGN_TO T2 on T1.host = T2.SiteName and T1.Name = T2.Name and T1.StartDate = T2.StartDate
+where T1.Host like (select name from SITE where manager like "',inManagerUser, '")
+Group by T2.name, T2.StartDate, T1.EndDate, T2.username;');
+prepare statement1 from @a;
+execute statement1 ;
+
+END

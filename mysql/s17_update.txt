@@ -1,0 +1,33 @@
+CREATE PROCEDURE `S17_Employee_Manage_Profile_Update`(in inUsername varchar(20) ,
+in inFirstName varchar(20), in inLastName varchar(20),  in inPassword varChar(20), in inStatus varChar(10),
+in inPhone char(10), in inEmail varchar(45), in inVisitorAccount boolean)
+BEGIN
+
+update user set Firstname = inFirstName where username like inUsername;
+UPDATE user 
+SET 
+    Lastname = inLastName
+WHERE
+    username LIKE inUsername;
+UPDATE User_Email 
+SET 
+    Email = inEmail
+WHERE
+    username LIKE inUsername;
+UPDATE employee 
+SET 
+    Phone = inPhone
+WHERE
+    username LIKE inUsername;
+
+if (inVisitorAccount = 1) then
+insert into User(Username, Password, Firstname, Lastname, Status)
+values(inUsername, inPassword, inFirstname, inLastname, inStatus);
+insert into Visitor(Username)
+values(inUsername);
+
+else if ( inVisitorAccount = 0) then
+delete from Visitor where Username like inUsername; 
+END IF;
+END IF;
+END

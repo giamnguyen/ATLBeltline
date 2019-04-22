@@ -1,0 +1,12 @@
+CREATE PROCEDURE `S27_Manager_Create_Event`(in inManagerUserName varchar(20),
+in inStaffUserName varchar(20), in inName varchar(50), in inStartDate date,
+in inEndDate date, in inPrice decimal(10, 2), in inCapacity int, 
+in inMinStaffReq int, in inDescription varchar(1000))
+BEGIN
+INSERT INTO EVENT(Host, Name, StartDate, EndDate, Price, Capacity, MinStaffReq, Description)
+VALUES((select name from SITE where manager like inManagerUserName),
+inName, inStartDate, inEndDate, inPrice, inCapacity, inMinStaffReq, inDescription);
+
+INSERT INTO ASSIGN_TO(Username, SiteName, Name, StartDate)
+VALUES(inStaffUserName, (select name from SITE where manager like inManagerUserName), inName, inStartDate);
+END

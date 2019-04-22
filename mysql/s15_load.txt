@@ -1,0 +1,10 @@
+CREATE PROCEDURE `S15_Take_Transit_Load`()
+BEGIN
+SELECT T2.Route, T2.TransportType as 'Transport Type', T1.Price, count(*) as '#Connect Sites'
+FROM ATLBeltLine.TRANSIT T1 inner join ATLBeltLine.CONNECT T2 on T1.route = T2.route
+Where T1.route in (
+Select Route
+from ATLBeltLine.CONNECT
+WHERE SiteName like  'Inman Park' )
+Group by Route;
+END

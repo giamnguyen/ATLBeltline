@@ -1,0 +1,10 @@
+CREATE PROCEDURE `S34_Visitor_Event_Detail`(in inEvent varChar(50), in inSite varChar(50), in inStartDate Date, in inEndDate date)
+BEGIN
+select T1.name, T1.host as "Site", T1.startDate, T1.endDate, T1.price as "Ticket Price($)", 
+(T1.capacity - (select count(*) from visit_event where name like T1.name group by name)) as "Ticket Remaining", T1.description
+from event T1 inner join visit_event T2 where T1.Host = T2.SiteName and T1.name = T2.name and T1.StartDate = T2.StartDate
+and T1.host like inSite
+and T1.name like inEvent
+and T1.StartDate between inStartDate and inEndDate
+and T1.EndDate between inStartDate and inEndDate;
+END

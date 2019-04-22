@@ -1,0 +1,5 @@
+CREATE PROCEDURE `S34_Visitor_Event_Detail_Log_Visit`(inUserName varchar(20), in inSite varChar(50), in inName date, in inStartDate date, in inDate date)
+BEGIN
+INSERT INTO VISIT_EVENT(Username, SiteName, Name, StartDate, Date)
+VALUES(inUsername, inSite, inName, inStartDate, inDate);
+END

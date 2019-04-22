@@ -1,0 +1,34 @@
+CREATE PROCEDURE `S25_Manager_Manage_Event_Filter`(in inName varchar(20),
+in inDescription varchar(20), in inStartDate date, in inEndDate date, in inDurationFrom int, in inDurationTo int,
+in inTotalVisitsFrom int, in inTotalVisitsTo int, in inTotalRevenueFrom decimal(10, 2), in inTotalRevenueTo decimal(10, 2))
+BEGIN
+Drop View if exists S25_Manager_Manage_Event_View_3;
+set @a = concat('
+Create View S25_Manager_Manage_Event_View_3 as
+SELECT 
+    T1.Name,
+    T2.Staff_Count,
+    T1.Duration,
+    SUM(T1.Total_Visits) AS "Total_Visits",
+    SUM(T1.Total_Revenue) AS "Total_Revenue",
+    T1.Description,
+    T1.StartDate
+FROM
+    S25_Manager_Manage_Event_View_1 T1
+        INNER JOIN
+    S25_Manager_Manage_Event_View_2 T2 ON T1.Name = T2.Name
+Where T1.StartDate between "', inStartDate,'" and "', inEndDate,'"
+GROUP BY T1.Name , T2.Staff_Count , T1.Duration;');
+prepare statement1 from @a;
+execute statement1 ;
+
+
+select Name, Staff_Count, Duration, Total_Visits, Total_Revenue
+from S25_Manager_Manage_Event_View_3
+where Name like concat('%', inName, '%')
+and description like concat('%', inDescription, '%')
+and if (inDurationFrom = 0 and inDurationTo = 0, Duration = Duration, Duration between inDurationFrom and inDurationTo)
+and if (inTotalVisitsFrom = 0 and inTotalVisitsTo= 0, Duration = Duration, Total_Visits between inTotalVisitsFrom and inTotalVisitsTo)
+and if (inTotalRevenueFrom = 0 and inTotalRevenueTo = 0, Total_Revenue = Total_Revenue, Total_Revenue between inTotalRevenueFrom and inTotalRevenueTo)
+group by Name, Staff_Count, Duration;
+END

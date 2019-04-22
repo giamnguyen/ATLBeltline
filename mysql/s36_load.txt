@@ -1,0 +1,11 @@
+CREATE PROCEDURE `S36_Visitor_Transit_Detail_Display`(in inSite varChar(50), in inTransportType varchar(15))
+BEGIN
+SELECT T2.Route, T2.TransportType as 'Transport Type', T1.Price, count(*) as '#Connect Sites'
+FROM ATLBeltLine.TRANSIT T1 inner join ATLBeltLine.CONNECT T2 on T1.route = T2.route
+Where T1.route in (
+Select Route
+from ATLBeltLine.CONNECT
+WHERE SiteName like inSite)
+and T2.TransportType like inTransportType
+Group by Route;
+END

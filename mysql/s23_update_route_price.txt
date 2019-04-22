@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S23_Administrator_Edit_Transit_Update`(in inTransportType varchar(20),
+in inOldRoute varchar(10),in inNewRoute varchar(10), in inPrice decimal(10, 2))
+BEGIN
+	UPDATE TRANSIT SET Route = inNewRoute where TransportType like inTransportType and Route like inOldRoute;
+    UPDATE TRANSIT SET Price = inPrice where TransportType like inTransportType and Route like inNewRoute;
+END

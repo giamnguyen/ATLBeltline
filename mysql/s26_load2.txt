@@ -1,0 +1,7 @@
+CREATE PROCEDURE `S26_Manager_View_Edit_Event_Load2`(in inEventName varchar(20), in inUsername varchar(20))
+BEGIN
+Select *
+from S26_Manager_View_Edit_Event_Load_View2
+group by Name;
+END
+

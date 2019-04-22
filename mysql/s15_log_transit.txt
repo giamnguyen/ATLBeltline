@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S15_User_Take_Transit_Log_Transit`(in inUsername varchar(20), in inRoute varchar(15),
+in inTransportType varchar(15), in inDate date)
+BEGIN
+insert into TAKE(Username, Route, TransportType, Date)
+values (inUsername, inRoute, inTransportType, inDate);
+END

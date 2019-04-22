@@ -1,0 +1,10 @@
+CREATE PROCEDURE `S21_Admin_Create_Site`(in inName varChar(50),
+in inZipcode char(10), in inAddress varChar(100), in inManagerFname varChar(20),
+in inManagerLname varChar(20), in inOpenEveryday char(3))
+BEGIN
+Insert into Site (Name, Address, Zipcode, OpenEveryday, Manager)
+Values (inName, inAddress, inZipcode, inOpenEveryday, (select T2.username
+from ATLBeltLine.manager T1 inner join ATLBeltLine.user T2 on T1.username = T2.username
+where inManagerFname like T2.firstname 
+and inManagerLname like T2.lastname));
+END

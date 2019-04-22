@@ -1,0 +1,12 @@
+CREATE PROCEDURE `S28_Manager_Manage_Staff`(in inSite varchar(20), in inFname varchar(10), in inLname varchar(10), in inStartDate date, in inEndDate date)
+BEGIN
+select concat(T2.FirstName,' ', T2.LastName) as 'Staff Name', count(*) as "#Event Shifts"
+from ATLBeltLine.assign_to T1 inner join ATLBeltLine.user T2 on T1.username = T2.username
+						inner join ATLBeltline.event T3 on T1.startdate = T3.startdate and T1.name = T3.name and T3.host = T1.SiteName
+where T1.SiteName like inSite
+and if (inLname like 'all', T2.lastName not like inLname, T2.LastName like inLname)
+and if (inFname like 'all', T2.FirstName not like inFname, T2.FirstName like inFname)
+and T3.STARTDATE between inStartDate AND inEndDate
+and T3.ENDDATE between inStartDate AND inEndDate
+group by T1.username;
+END

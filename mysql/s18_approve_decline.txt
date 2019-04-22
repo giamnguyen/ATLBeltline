@@ -1,0 +1,10 @@
+CREATE PROCEDURE `S18_Admin_Manage_User_Approve`(in inUsername varChar(50), in inApprove BOOLEAN)
+BEGIN
+
+if (inApprove = 1) then
+UPDATE User set status = 'Approved' Where username like inusername;
+else if (inApprove = 0) then
+UPDATE User set status = 'Declined' Where username like inusername;
+end if;
+end if;
+END

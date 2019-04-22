@@ -1,0 +1,34 @@
+CREATE PROCEDURE `S20_Admin_Edit_Site`(in inName varChar(50), in inZipcode char(10),  in inAddress varChar(100), in inManagerFname varChar(20), in inManagerLname varChar(20), in inOpenEveryday char(3))
+BEGIN
+
+Update Site set name = inName where name like inName;
+UPDATE Site 
+SET 
+    zipcode = inZipcode
+WHERE
+    name LIKE inName;
+UPDATE Site 
+SET 
+    address = inAddress
+WHERE
+    name LIKE inName;
+UPDATE Site 
+SET 
+    openEveryday = inOpenEveryday
+WHERE
+    name LIKE inName;
+UPDATE Site 
+SET 
+    manager = (SELECT 
+            T2.username
+        FROM
+            ATLBeltLine.manager T1
+                INNER JOIN
+            ATLBeltLine.user T2 ON T1.username = T2.username
+        WHERE
+            inManagerFname LIKE T2.firstname
+                AND inManagerLname LIKE T2.lastname)
+WHERE
+    name LIKE inName;
+
+END

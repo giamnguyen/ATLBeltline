@@ -1,0 +1,7 @@
+CREATE PROCEDURE `S1_User_Login`(in inEmail varchar(20), in inPassWord varchar(20))
+BEGIN
+select T1.username, T2.password
+from user_email T1 inner join user T2 on T1.username = T2.username
+where T1.email like inEmail
+and T2.password like md5(inPassword);
+END

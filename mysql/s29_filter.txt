@@ -1,0 +1,14 @@
+CREATE PROCEDURE `S29_Manager_Site_Report_Filter`(in inStartDate date, in inEndDate date, in inEventCountFrom int,
+in inEventCountTo int, in inStaffCountFrom int, in inStaffCountTo int, in inTotalVisitsFrom int, 
+in inTotalVisitsTo int, in inTotalRevenueFrom decimal(10, 2), in inTotalRevenueTo decimal(10, 2))
+BEGIN
+select Date, Count(*) as 'Event Count', sum(Staff_Count) as 'Staff Count', sum(Total_Visits) as 'Total Visit',
+sum(Event_Revenue) as 'Total Revenue ($)'
+from Manager_Site_Report_5
+where Date between inStartDate and inEndDate
+group by date
+having count(*) between inEventCountFrom and inEventCountTo
+and sum(Staff_Count) between inStaffCountFrom and inStaffCountTo
+and sum(Total_Visits) between inTotalVisitsFrom and inTotalVisitsTo
+and sum(Event_Revenue) between inTotalRevenueFrom and inTotalRevenueTo;
+END

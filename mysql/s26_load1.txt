@@ -1,0 +1,32 @@
+CREATE PROCEDURE `S26_Manager_View_Edit_Event_Load1`(in inUsername varchar(20), inEventName varchar(20))
+BEGIN
+Drop View if exists S26_Manager_View_Edit_Event_Load_View1;
+set @a = concat('
+Create view S26_Manager_View_Edit_Event_Load_View1 as
+Select T1.Date, count(*) as "DailyVisits", (count(*) * T2.price) as "DailyRevenue"
+from Visit_Event  as T1 inner join Event as T2 on T1.Name = T2.Name and T1.StartDate = T2.StartDate and T1.SiteName = T2.Host
+where T1.SiteName in (select Name from Site where manager like "', inUsername,'")
+and T1.Name like "', inEventName,'"
+group by T1.SiteName, T1.Name, T1.Date;');
+
+prepare statement1 from @a;
+execute statement1 ;
+
+Drop View if exists S26_Manager_View_Edit_Event_Load_View2;
+set @a = concat('
+Create view S26_Manager_View_Edit_Event_Load_View2 as
+select Name, StartDate, EndDate, Price, Capacity, MinStaffReq, Description
+from EVENT
+where Name = "', inEventName,'"
+ and Host in (select Name from Site where manager like "', inUsername,'" );');
+
+prepare statement1 from @a;
+execute statement1 ;
+
+
+SELECT 
+    *
+FROM
+    S26_Manager_View_Edit_Event_Load_View1;
+
+END

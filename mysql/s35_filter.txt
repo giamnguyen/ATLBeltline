@@ -1,0 +1,92 @@
+CREATE PROCEDURE `S35_Visitor_Explore_Site_Filter`(in inVisitorUser varchar(20),
+in inName varchar(20), in inStartDate date, in inEndDate date, in inEventCountFrom int,
+in inEventCountTo int, in inTotalVisitsFrom int, in inTotalVisitsTo int
+, in inVisited char(3), in inOpenEveryday char(3))
+BEGIN
+
+Drop View if exists Visitor_Explore_Site_Filter_1;
+set @a = concat('Create View Visitor_Explore_Site_Filter_1 as
+(Select SiteName, count(*) as Visits
+from Visit_Event
+where date between "', inStartDate,'" and "', inStartDate,'"
+group by SiteName)
+union all
+(Select SiteName, count(*) as Visits
+from Visit_Site
+where date between "', inStartDate,'" and "', inStartDate,'"
+group by SiteName);');
+prepare statement1 from @a;
+execute statement1 ;
+
+Drop View if exists Visitor_Explore_Site_Filter_2;
+set @a = concat('
+Create View Visitor_Explore_Site_Filter_2 as
+select SiteNAme, count(*) as My_Visits
+from VISIT_SITE
+where username like "',inVisitorUser, '"
+and date between "', inStartDate,'" and "', inStartDate,'"
+group by SiteName');
+prepare statement1 from @a;
+execute statement1 ;
+
+
+Drop View if exists Visitor_Explore_Site_Filter_3;
+CREATE VIEW Visitor_Explore_Site_Filter_3 AS
+    SELECT 
+        SiteName, SUM(Visits) AS 'Total_Visits'
+    FROM
+        Visitor_Explore_Site_Filter_1
+    GROUP BY SiteName;
+
+
+Drop View if exists Visitor_Explore_Site_Filter_4;
+CREATE VIEW Visitor_Explore_Site_Filter_4 AS
+    SELECT 
+        T1.SiteName, T1.My_Visits, T2.Total_Visits
+    FROM
+        Visitor_Explore_Site_Filter_2 T1
+            INNER JOIN
+        Visitor_Explore_Site_Filter_3 T2 ON T1.SiteName = T2.SiteName;
+
+Drop View if exists Visitor_Explore_Site_Filter_5;
+set @a = concat('
+Create View Visitor_Explore_Site_Filter_5 as
+select Host, Count(*) as Event_Count
+from Event
+where StartDate between "', inStartDate,'" and "', inEndDate,'"
+and EndDate between "', inStartDate,'" and "', inEndDate,'"
+group by Host;');
+prepare statement1 from @a;
+execute statement1 ;
+
+SELECT 
+    T1.SiteName, T2.Event_Count, T1.Total_Visits, T1.My_Visits
+FROM
+    Visitor_Explore_Site_Filter_4 T1
+        INNER JOIN
+    Visitor_Explore_Site_Filter_5 T2 ON T1.SiteName = T2.Host
+WHERE
+    IF(inVisited LIKE 'No',
+        T1.My_VISITS < 1,
+        T1.My_Visits >= 0)
+        AND IF(inOpenEveryday NOT LIKE 'All',
+        T1.SiteName IN (SELECT 
+                Name
+            FROM
+                Site
+            WHERE
+                OpenEveryday LIKE inOpenEveryday),
+        T1.SiteName LIKE T1.SiteName)
+        AND IF(inEventCountFrom = 0
+            AND inEventCountTo = 0,
+        T1.Total_Visits >= 0,
+        T1.Total_Visits BETWEEN inEventCountFrom AND inEventCountTo)
+        AND IF(inTotalVisitsFrom = 0
+            AND inTotalVisitsTo = 0,
+        T1.My_Visits >= 0,
+        T1.My_Visits BETWEEN inTotalVisitsFrom AND inTotalVisitsTo)
+        AND IF(inName LIKE 'All',
+        T1.SiteName LIKE T1.SiteName,
+        T1.SiteName LIKE inName)
+;
+END

@@ -1,0 +1,11 @@
+CREATE PROCEDURE `S32_Staff_Event_Detail`(in inEvent varchar(20), in inSite varchar(10), in inStartDate date, in inEndDate date)
+BEGIN
+select T3.Name, T3.Host,T3.Startdate, T3.EndDate,  (datediff(inEndDate, inStartDate) + 1) as 'Durations Day', 
+concat(T2.FirstName, T2.LastName) as 'Staff Assign', T3.Capacity, T3.price, T3.Description 
+from Assign_To T1 inner join USER T2 on T1.username = T2.username
+				  inner join EVENT T3 on T1.startdate = T3.startdate and T1.name = T3.name and T3.host = T1.SiteName
+where inStartDate like T1.startdate
+and inEvent like T1.name
+and inSite like T1.Sitename;
+
+END

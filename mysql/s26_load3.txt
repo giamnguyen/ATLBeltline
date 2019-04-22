@@ -1,0 +1,19 @@
+CREATE PROCEDURE `S26_Manager_View_Edit_Event_Load3`(in inEventName varchar(20), in inStartDate date,
+in inEndDate date)
+BEGIN
+select (select group_concat(username Separator '; ')
+from staff
+where username in(
+select username
+from ASSIGN_TO
+where startdate between inStartDate and inEndDate
+and name like inEventName
+group by username)) as Assigned_Staff, (select group_concat(username Separator '; ')
+from staff
+where username not in(
+select username
+from ASSIGN_TO
+where startdate between inStartDate and inEndDate
+and name like inEventName
+group by username)) as Availiable_Staff;
+END

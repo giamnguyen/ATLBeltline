@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S36_Visitor_Transit_Detail_Log_Transit`(in inUserName varchar(20), in inRoute varchar(10),
+in inTransportType varchar(15), in inDate date)
+BEGIN
+INSERT INTO TAKE(Username, Route, TransportType, Date)
+VALUES(inUsername, inRoute, inTransportType, inDate);
+END

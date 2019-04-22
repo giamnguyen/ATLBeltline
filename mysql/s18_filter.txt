@@ -1,0 +1,45 @@
+CREATE PROCEDURE `S18_Admin_Manage_User_Filter`(in inUserName varchar(20), in inType char(10), in inStatus char(10))
+BEGIN
+declare userType char(10);
+set userType = inType;
+if (inType like 'Manager') then
+Select T3.Username, count(*) as 'Email Count', T1.status, userType as 'User Type'
+From ATLBeltline.USER T1 inner join ATLBeltline.USER_EMAIL T2 on T1.username = T2.username 
+inner join ATLBeltline.MANAGER T3 on T1.username = T3.username
+where if (inStatus like 'All', T1.status not in (
+select status from user where status like inStatus), T1.status in (
+select status from user where status like inStatus))
+and (if (inUserName like 'All', T3.username not like inUserName, T3.username like inUserName))
+group by T2.username;
+else if (inType like 'Visitor') then
+Select T3.Username, count(*) as 'Email Count', T1.status, userType as 'User Type'
+From ATLBeltline.USER T1 inner join ATLBeltline.USER_EMAIL T2 on T1.username = T2.username
+inner join ATLBeltline.VISITOR T3 on T1.username = T3.username
+where if (inStatus like 'All', T1.status not in (
+select status from user where status like inStatus), T1.status in (
+select status from user where status like inStatus))
+and (if (inUserName like 'All', T3.username not like inUserName, T3.username like inUserName))
+group by T2.username;
+else if (inType like 'User') then
+Select T3.Username, count(*) as 'Email Count', T1.status, userType as 'User Type'
+From ATLBeltline.USER T1 inner join ATLBeltline.USER_EMAIL T2 on T1.username = T2.username
+inner join ATLBeltline.USER T3 on T1.username = T3.username
+where if (inStatus like 'All', T1.status not in (
+select status from user where status like inStatus), T1.status in (
+select status from user where status like inStatus))
+and (if (inUserName like 'All', T3.username not like inUserName, T3.username like inUserName))
+group by T2.username;
+else if (inType like 'Staff') then
+Select T3.Username, count(*) as 'Email Count', T1.status, userType as 'User Type'
+From ATLBeltline.USER T1 inner join ATLBeltline.USER_EMAIL T2 on T1.username = T2.username
+inner join ATLBeltline.Staff T3 on T1.username = T3.username
+where if (inStatus like 'All', T1.status not in (
+select status from user where status like inStatus), T1.status in (
+select status from user where status like inStatus))
+and (if (inUserName like 'All', T3.username not like inUserName, T3.username like inUserName))
+group by T2.username;
+end if;
+end if;
+end if;
+end if;
+END

@@ -1,0 +1,12 @@
+CREATE PROCEDURE `S31_Staff_View_Schedule`(in inEventName varchar(20), in inDescription varchar(10), in inStartDate date, in inEndDate date)
+BEGIN
+
+select T1.Name as "Event Name", Host as "Site Name", T1.StartDate, T1.EndDate, count(*) as "Staff Count"
+from event T1 inner join assign_to T2 where T1.Host = T2.SiteName and T1.name = T2.name and T1.StartDate = T2.StartDate
+and if (inEventName like 'all', T1.Name not like inEventName, T1.Name like inEventName)
+and T1.STARTDATE between inStartDate AND inEndDate
+and T1.ENDDATE between inStartDate AND inEndDate
+and T1.Description like  concat('%',inDescription,'%') 
+Group by T2.Name, T2.startdate;
+
+END

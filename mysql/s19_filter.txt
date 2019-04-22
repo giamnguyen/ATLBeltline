@@ -1,0 +1,25 @@
+CREATE PROCEDURE `S19_Admin_Manage_Site_Filter`(in inSitename varChar(50), in inManagerFname varChar(20),in inManagerLname varChar(20), in inOpenEveryday char(3))
+BEGIN
+declare managerUser char(20);
+set managerUser = (select T2.username
+from ATLBeltLine.manager T1 inner join ATLBeltLine.user T2 on T1.username = T2.username
+where inManagerFname like T2.firstname 
+and inManagerLname like T2.lastname);
+SELECT 
+    name,
+    CONCAT(T2.firstname, ' ', T2.lastname) AS 'Manager',
+    OpenEveryday
+FROM
+    Site T1
+        INNER JOIN
+    USER T2 ON T1.manager = T2.username
+WHERE
+    IF(inSiteName LIKE 'All',
+        name NOT LIKE inSitename,
+        name LIKE inSitename)
+        AND IF(inManagerFname LIKE 'ALL'
+            AND inManagerFname LIKE 'ALL',
+        manager NOT LIKE '',
+        manager LIKE managerUser)
+        AND openEveryday LIKE inOpenEveryday;
+END

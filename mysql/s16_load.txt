@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S16_User_Transit_History_Load`(in inUsername varchar(20))
+BEGIN
+select T2.date, T2.Route , T2.TransportType as 'Transport Type', T1.Price
+from ATLBeltLine.TRANSIT T1 inner join ATLBeltLine.TAKE T2 on T1.route = T2.route
+Where T2.Username = inUsername;
+END

@@ -1,0 +1,7 @@
+CREATE PROCEDURE `S29_Manager_Site_Report`()
+BEGIN
+select date, Count(*) as 'Event Count', sum(Staff_Count) as 'Staff Count', sum(Total_Visits) as 'Total Visit',
+sum(Event_Revenue) as 'Total Revenue ($)'
+from Manager_Site_Report_5
+group by date;
+END

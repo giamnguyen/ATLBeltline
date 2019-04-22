@@ -1,0 +1,11 @@
+CREATE PROCEDURE `S19_Admin_Manage_Site_Delete`(in inName varChar(50),
+in inManagerFname varChar(20), in inManagerLname varChar(20), in inOpenEveryday char(3))
+BEGIN
+delete from SITE 
+where Name like inName
+and manager like (select T2.username
+from ATLBeltLine.manager T1 inner join ATLBeltLine.user T2 on T1.username = T2.username
+where inManagerFname like T2.firstname 
+and inManagerLname like T2.lastname)
+and OpenEveryDay like inOpenEveryDay;
+END

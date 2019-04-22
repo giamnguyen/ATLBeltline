@@ -1,0 +1,10 @@
+CREATE PROCEDURE `S17_Manage_Profile_Remove_Email`(in inUsername varchar(20),in inEmail varchar(45))
+BEGIN 
+if (select count(*)
+from user_email
+where username like inUsername
+group by username
+having count(*) > 1) then
+delete from USER_EMAIL where Username like inUsername and Email like inEmail;
+end if;
+END

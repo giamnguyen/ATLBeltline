@@ -1,0 +1,13 @@
+CREATE PROCEDURE `S15_Take_Transit_Filter`(in inContainSite varchar(50), in inTransportType varChar(50),
+ in inPriceRangeFrom decimal(10,2), in inPriceRangeTo decimal(10,2))
+BEGIN
+SELECT T2.Route, T2.TransportType as 'Transport Type', T1.Price, count(*) as '#Connect Sites'
+FROM ATLBeltLine.TRANSIT T1 inner join ATLBeltLine.CONNECT T2 on T1.route = T2.route
+Where T1.route in (
+Select Route
+from ATLBeltLine.CONNECT
+WHERE SiteName like  inContainSite )
+and if (inTransportType like 'All', T2.TransportType not like inTransportType, T2.TransportType like inTransportType) 
+and if (inPriceRangeFrom = 0 and inPriceRangeTo = 0, price = price, price between inPriceRangeFrom and inPriceRangeTo)
+Group by Route;
+END

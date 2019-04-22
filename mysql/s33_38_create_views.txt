@@ -1,0 +1,49 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `S33_38_Visitor_CreateViews`(in inVisitorUser varchar(20))
+BEGIN
+Drop View if exists Visitor_Explore_Site_1;
+CREATE VIEW Visitor_Explore_Site_1 AS
+    (SELECT 
+        SiteName, COUNT(*) AS Visits
+    FROM
+        Visit_Event
+    GROUP BY SiteName) UNION ALL (SELECT 
+        SiteName, COUNT(*) AS Visits
+    FROM
+        Visit_Site
+    GROUP BY SiteName);
+
+Drop View if exists Visitor_Explore_Site_2;
+set @a = concat('
+Create View Visitor_Explore_Site_2 as
+select SiteNAme, count(*) as My_Visits
+from VISIT_SITE
+where username like "',inVisitorUser, '"group by SiteName');
+prepare statement1 from @a;
+execute statement1 ;
+
+Drop View if exists Visitor_Explore_Site_3;
+CREATE VIEW Visitor_Explore_Site_3 AS
+    SELECT 
+        SiteName, SUM(Visits) AS 'Total_Visits'
+    FROM
+        Visitor_Explore_Site_1
+    GROUP BY SiteName;
+
+Drop View if exists Visitor_Explore_Site_4;
+CREATE VIEW Visitor_Explore_Site_4 AS
+    SELECT 
+        T1.SiteName, T1.My_Visits, T2.Total_Visits
+    FROM
+        Visitor_Explore_Site_2 T1
+            INNER JOIN
+        Visitor_Explore_Site_3 T2 ON T1.SiteName = T2.SiteName;
+
+Drop View if exists Visitor_Explore_Site_5;
+CREATE VIEW Visitor_Explore_Site_5 AS
+    SELECT 
+        Host, COUNT(*) AS 'Event_Count'
+    FROM
+        Event
+    GROUP BY Host;
+
+END

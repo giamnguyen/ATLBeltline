@@ -1,0 +1,4 @@
+CREATE PROCEDURE `S17_Manage_Profile_Add_Email`(in inUsername varchar(20),in inEmail varchar(45))
+BEGIN
+insert into USER_EMAIL (Username, Email) Values (inUsername, inEmail);
+END

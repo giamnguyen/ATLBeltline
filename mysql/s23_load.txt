@@ -1,0 +1,15 @@
+CREATE PROCEDURE `S23_Administrator_Edit_Transit_Load`(in inTransportType varchar(10),
+in inRoute varchar(10))
+BEGIN
+select
+	(select group_concat(T2.sitename SEPARATOR '; ') as connectedSite
+	from transit T1 inner join connect T2 on T1.route = T2.route and T1.transportType = T2.transportType
+	where T1.transportType = inTransportType and T1.Route like inRoute
+	group by T1.transportType, T1.route) as ConnectedSite,
+    
+	(select group_concat(name SEPARATOR '; ') as unconnectedSite 
+	from site
+	where name not in (select T2.sitename
+	from transit T1 inner join connect T2 on T1.route = T2.route and T1.transportType = T2.transportType
+	where T1.transportType = inTransportType and T1.Route like inRoute)) as UnconnectSite;
+END

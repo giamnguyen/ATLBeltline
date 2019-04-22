@@ -1,0 +1,5 @@
+CREATE PROCEDURE `S23_Administrator_Edit_Transit_Unconnect`(in inTransportType varchar(20),
+in inRoute varchar(10), inSite varchar(40))
+BEGIN
+    Delete from CONNECT where SiteName like inSite and Route like inRoute and TransportType like inTransportType;
+END

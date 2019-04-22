@@ -1,0 +1,14 @@
+CREATE PROCEDURE `S16_User_Transit_History_Filter`(in inUsername varchar(20) ,in inTransportType varchar(50), in inContainSite varChar(50),
+ in inRoute varChar(15), in inStartDate date, in inEndDate date)
+BEGIN
+select T2.date, T2.Route , T2.TransportType as 'Transport Type', T1.Price
+from ATLBeltLine.TRANSIT T1 inner join ATLBeltLine.TAKE T2 on T1.route = T2.route
+Where T1.route in (
+Select Route
+from ATLBeltLine.CONNECT
+WHERE SiteName like inContainSite)
+and T2.Username = inUsername
+and if (inTransportType like 'All', T2.TransportType like T2.TransportType, T2.TransportType like inTransportType)
+and date between inStartDate and inEndDate
+and if (inRoute like '', T2.Route like T2.Route, T2.Route like inRoute);
+END

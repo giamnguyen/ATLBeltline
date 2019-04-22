@@ -1,0 +1,18 @@
+CREATE PROCEDURE `S33_Visitor_Explore_Event_Filter`(in inUserName varchar(20), in inName varchar(20), 
+in inDescriptionKeyword varchar(10), in inSiteName varchar(20), in inStartDate date, in inEndDate date,
+in inVisitsFrom int, in inVisitsTo int, in inPriceFrom decimal(10,2), in inPriceTo decimal(10,2))
+BEGIN
+select T1.Name, T1.Host, T1.Price, (T1.Capacity - count(*)) as 'Ticket Remaining',
+count(*) as 'Total Visits', (select count(*) from Visit_Site where username like inUserName and SiteName like inSiteName) 
+as 'My Visits'
+from Event T1 inner join Visit_Site T2 on T1.Host = T2.Sitename
+		
+where T1.Name like concat('%',inName,'%')
+and T1.Description like concat('%',inDescriptionKeyword,'%')
+and T1.Host like inSiteName
+and T1.StartDate between inStartDate and inEndDate
+and T1.EndDate between inStartDate and inEndDate
+and T1.Price between inPriceFrom and inPriceTo
+group by T2.SiteName
+having count(*) between inVisitsFrom and inVisitsTo;
+END

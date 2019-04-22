@@ -1,0 +1,28 @@
+CREATE PROCEDURE `S25_Manage_Event_Delete`(in inUsername varchar(10), in inEventName varchar(20))
+BEGIN
+Delete from event 
+
+where host = (select host from (select T1.host, T1.name, startdate, T2.manager
+from event T1 inner join site T2 on T1.host = T2.name
+where T1.name = inEventName and host = (select name 
+from site T1 inner join manager T2 on T1.manager = T2.username
+where manager = inUsername
+group by T1.manager )
+group by T1.host, T1.name) as table1) 
+
+and name = (select name from (select T1.host, T1.name, startdate, T2.manager
+from event T1 inner join site T2 on T1.host = T2.name
+where T1.name = inEventName and host = (select name 
+from site T1 inner join manager T2 on T1.manager = T2.username
+where manager = inUsername
+group by T1.manager )
+group by T1.host, T1.name) as table2) 
+
+and startdate = (select startdate from (select T1.host, T1.name, startdate, T2.manager
+from event T1 inner join site T2 on T1.host = T2.name
+where T1.name = inEventName and host = (select name 
+from site T1 inner join manager T2 on T1.manager = T2.username
+where manager = inUsername
+group by T1.manager )
+group by T1.host, T1.name) as table3);
+END

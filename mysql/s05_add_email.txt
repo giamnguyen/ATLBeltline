@@ -1,0 +1,6 @@
+CREATE PROCEDURE `S5_Register_Employee_Only_Add`(in inUsername varchar(20), in inEmail varchar(40))
+BEGIN
+INSERT INTO USER_EMAIL (Username, Email)
+VALUES
+(inUserName, inEmail);
+END
